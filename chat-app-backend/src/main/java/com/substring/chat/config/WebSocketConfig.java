@@ -16,10 +16,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
         config.enableSimpleBroker("/topic");
         // /topic/messages
+        //Bất kỳ đường dẫn nào bắt đầu bằng /topic, thì server sẽ dùng để gửi tin nhắn đến client.
 
         config.setApplicationDestinationPrefixes("/app");
         // /app/chat
         // server-side: @MessagingMapping("/chat)
+
+        // @MessageMapping("/sendMessage/{roomId}")        // client gửi tới: /app/sendMessage/room
 
 
     }

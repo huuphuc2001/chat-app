@@ -4,6 +4,7 @@ import com.substring.chat.entities.Message;
 import com.substring.chat.entities.Room;
 import com.substring.chat.playload.MessageRequest;
 import com.substring.chat.repositories.RoomRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 
 @Controller
 @CrossOrigin("http://localhost:5173")
+//@CrossOrigin(origins = "*")
 public class ChatController {
 
 
@@ -27,9 +29,10 @@ public class ChatController {
 
     //for sending and receiving messages
     @MessageMapping("/sendMessage/{roomId}")// /app/sendMessage/roomId
-    @SendTo("/topic/room/{roomId}")//subscribe
+    @SendTo("/topic/room/{roomId}")//Trả message cho client đã subscribe
+    @Transactional
     public Message sendMessage(
-            @DestinationVariable String roomId,
+            @DestinationVariable String roomId, //Lấy giá trị từ {roomId} trong URL
             @RequestBody MessageRequest request
     ) {
 
@@ -44,9 +47,6 @@ public class ChatController {
         } else {
             throw new RuntimeException("room not found !!");
         }
-
         return message;
-
-
     }
 }
